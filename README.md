@@ -99,49 +99,38 @@ The following steps show how to pre-process the data for a given scene. <br />
 ```
 python tools_make_data/preprocess_camera_poses.py --config configs/Replica/replica_office0.yml
 ```
+This will create an experiment folder under `data/` with the updated config file and preprocessed camera poses.
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-2. [OPTIONAL] precompute images sharpness:
+2. Build point cloud (for scene scaling):
 ```
-python tools_instant_ngp/precompute_sharpness.py --config tools_neurips/batch_scripts/configs/ScanNet/scene_0000.yml
+python tools_make_data/save_input_pc_for_init_scene_scaling.py --config data/Replica_office0/0/configs.yml
 ```
+NOTE: if you turn off the `POSES_FILENAME` variable (ie "") in config file that script will save the raw PC without using preprocessed poses
 
-3. Build point cloud (for scene scaling):
-```
-python tools_instant_ngp/save_input_pc_for_init_scene_scaling.py --config tools_neurips/batch_scripts/configs/ScanNet/scene_0000.yml
-```
-if you turn off the `POSES_FILENAME` variable (ie "") in config file that script will save the raw PC without using preprocessed poses
 
-4. Estimate scaling parameters:
+
+
+
+
+
+
+3. Estimate scaling parameters:
 ```
 python tools_instant_ngp/estimate_scale_and_shift_using_GT_pc.py --config tools_neurips/batch_scripts/configs/ScanNet/scene_0000.yml
 ```
 
-5. Prepare data for NGP:
+4. Prepare data for NGP:
 ```
 python tools_instant_ngp/prepare_ngp_format_dataset.py --config tools_neurips/batch_scripts/configs/ScanNet/scene_0000.yml
 python tools_instant_ngp/add_poses_to_transforms_json.py --config tools_neurips/batch_scripts/configs/ScanNet/scannet_scene0000.ym
 ```
 
-6. [OPTIONAL] Build point cloud asin NGP (for debugging):
+5. [OPTIONAL] Build point cloud asin NGP (for debugging):
 ```
 python tools_instant_ngp/save_GT_pc_from_prepared_data_from_ngp.py --config tools_neurips/batch_scripts/configs/ScanNet/scannet_scene0000.yml --parent tools_neurips/batch_scripts/configs/ScanNet/experiment_hyperparams/base.yml
 ```
 
-7. [OPTIONAL] Build Camera poses ply (for debugging):
+6. [OPTIONAL] Build Camera poses ply (for debugging):
 ```
 python tools_instant_ngp/save_input_poses.py --config tools_neurips/batch_scripts/configs/ScanNet/scannet_scene0000.yml
 python tools_instant_ngp/save_input_poses_ngp.py --config tools_neurips/batch_scripts/configs/ScanNet/scannet_scene0000.yml --parent tools_neurips/batch_scripts/configs/ScanNet/experiment_hyperparams/base.yml
