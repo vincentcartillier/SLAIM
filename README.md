@@ -56,7 +56,7 @@ cmake -DCMAKE_C_COMPILER=gcc -DCMAKE_CXX_COMPILER=g++ -DNGP_BUILD_WITH_GUI=off .
 cmake --build build --config RelWithDebInfo -j
 ```
 
-Note: I had to manully link GLEW in the CMakeLists.txt (L180). If you already have GLEW installed this shouldn't be need. Check the CMakeLists.txt from main repo for reference.
+Note: I had to manully link GLEW in the CMakeLists.txt (L180). If you already have GLEW installed this shouldn't be needed. Check the CMakeLists.txt from main repo for reference.
 
 ```
 [...(L180)]
@@ -73,13 +73,33 @@ else()
 endif()
 ```
 
+## Data
+
+### Download
+* ScanNet:
+Please follow the data downloading procedure on [ScanNet](http://www.scan-net.org/) website, and extract color/depth frames from the `.sens` file using this [code](https://github.com/ScanNet/ScanNet/blob/master/SensReader/python/reader.py). <br />
+Place the data under `./Datasets/scannet/scans/scene0000_00/frames`
+
+* Replica:
+Use the following script to download the data. Data is saved under `./Datasets/Replica`. We use the same trajectories and scenes as in iMAP, NICE-SLAM, Co-SLAM etc...
+```bash
+bash scripts/download_replica.sh
+```
+
+* TUM RGB-D:
+Use the following script to download the data. Data is saved under `./Datasets/TUM-RGBD`.
+```bash
+bash scripts/download_tum.sh
+```
+
+### Pre-process
+The following steps show how to pre-process the data for a given scene.
 
 
 ## Demo
 
 
 
-## Data
 
 
 
