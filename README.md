@@ -105,19 +105,16 @@ This will create an experiment folder under `data/` with the updated config file
 ```
 python tools_make_data/save_input_pc_for_init_scene_scaling.py --config data/Replica_office0/0/configs.yml
 ```
-NOTE: if you turn off the `POSES_FILENAME` variable (ie "") in config file that script will save the raw PC without using preprocessed poses
-
-
-
-
-
-
-
+NOTE: if you turn off the `POSES_FILENAME` variable (ie "") in config file, that script will save the raw PC without using preprocessed poses.
 
 3. Estimate scaling parameters:
 ```
-python tools_instant_ngp/estimate_scale_and_shift_using_GT_pc.py --config tools_neurips/batch_scripts/configs/ScanNet/scene_0000.yml
+python tools_make_data/estimate_scale_and_shift_using_GT_pc.py --config data/Replica_office0/0/configs.yml
 ```
+
+
+
+
 
 4. Prepare data for NGP:
 ```
