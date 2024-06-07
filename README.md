@@ -112,14 +112,10 @@ NOTE: if you turn off the `POSES_FILENAME` variable (ie "") in config file, that
 python tools_make_data/estimate_scale_and_shift_using_GT_pc.py --config data/Replica_office0/0/configs.yml
 ```
 
-
-
-
-
 4. Prepare data for NGP:
 ```
-python tools_instant_ngp/prepare_ngp_format_dataset.py --config tools_neurips/batch_scripts/configs/ScanNet/scene_0000.yml
-python tools_instant_ngp/add_poses_to_transforms_json.py --config tools_neurips/batch_scripts/configs/ScanNet/scannet_scene0000.ym
+python tools_make_data/prepare_ngp_format_dataset.py --config data/Replica_office0/0/configs.yml
+python tools_make_data/add_poses_to_transforms_json.py --config data/Replica_office0/0/configs.yml
 ```
 
 5. [OPTIONAL] Build point cloud asin NGP (for debugging):
