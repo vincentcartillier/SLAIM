@@ -2,8 +2,9 @@
 
 Official code release for the paper:
 
-**[SLAIM: Robust Dense Neural SLAM for Online Tracking and Mapping][1]**
-*Vincent Cartillier, Grant Schindler, Irfan Essa*
+> **[SLAIM: Robust Dense Neural SLAM for Online Tracking and Mapping][1]**
+> *[Vincent Cartillier](https://vincentcartillier.github.io/), Grant Schindler, Irfan Essa*
+> Neural Rendering Intelligence workshop CVPR 2024
 
 
 [[Project page](https://vincentcartillier.github.io/slaim.html)], [[arXiv](https://arxiv.org/abs/2404.11419)]
