@@ -1,0 +1,4 @@
+[submodule "dependencies/instant-ngp"]
+	path = dependencies/instant-ngp
+	url = git@github.com:vincentcartillier/instant-ngp.git
+	branch = neurips2023

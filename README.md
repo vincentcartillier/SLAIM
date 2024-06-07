@@ -28,6 +28,9 @@ Official code release for the paper:
 }
 ```
 
+
+Code tested on a single A40 node (Ubundu 20, cuda 11.3) <br />
+
 ## Setup
 1. Clone SLAIM
 ```bash
@@ -38,15 +41,39 @@ cd SLAIM
 
 2. Create a conda environment,
 ```bash
-conda create -n slaim python=3.11 cmake=3.14.0
+conda create -n slaim python=3.7
 conda activate slaim
 pip install -r requirements.txt
 ```
 
-3. Install Instant-NGP.
+3. Install Instant-NGP.  <br />
+You will need GCC/G++ 8 or higher, cmake v3.21 or higher and cuda 10.2 or higher. Please check the [main repo](https://github.com/NVlabs/instant-ngp) for more details.
+
+
 ```bash
-cd dependencies/Instant-NGP
+cd dependencies/instant-ngp
+cmake -DCMAKE_C_COMPILER=gcc -DCMAKE_CXX_COMPILER=g++ -DNGP_BUILD_WITH_GUI=off . -B build -DCMAKE_BUILD_TYPE=RelWithDebInfo
+cmake --build build --config RelWithDebInfo -j
 ```
+
+Note: I had to manully link GLEW in the CMakeLists.txt (L180). If you already have GLEW installed this shouldn't be need. Check the CMakeLists.txt from main repo for reference.
+
+```
+[...(L180)]
+if (MSVC)
+	list(APPEND NGP_INCLUDE_DIRECTORIES "dependencies/gl3w")
+	list(APPEND GUI_SOURCES "dependencies/gl3w/GL/gl3w.c")
+	list(APPEND NGP_LIBRARIES opengl32 $<TARGET_OBJECTS:glfw_objects>)
+else()
+	find_package(GLEW REQUIRED)
+    set(GLEW_INCLUDE_DIRS "/nethome/vcartillier3/lib/glew-2.1.0/build/cmake/install/include")
+    set(GLEW_LIBRARIES "/nethome/vcartillier3/lib/glew-2.1.0/build/cmake/install/lib/libGLEW.so")
+	list(APPEND NGP_INCLUDE_DIRECTORIES ${GLEW_INCLUDE_DIRS})
+	list(APPEND NGP_LIBRARIES GL ${GLEW_LIBRARIES} $<TARGET_OBJECTS:glfw_objects>)
+endif()
+```
+
+
 
 ## Demo
 
