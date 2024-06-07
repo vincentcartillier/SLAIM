@@ -76,24 +76,80 @@ endif()
 ## Data
 
 ### Download
-* ScanNet:
+* **ScanNet:** <br />
 Please follow the data downloading procedure on [ScanNet](http://www.scan-net.org/) website, and extract color/depth frames from the `.sens` file using this [code](https://github.com/ScanNet/ScanNet/blob/master/SensReader/python/reader.py). <br />
 Place the data under `./Datasets/scannet/scans/scene0000_00/frames`
 
-* Replica:
+* **Replica:** <br />
 Use the following script to download the data. Data is saved under `./Datasets/Replica`. We use the same trajectories and scenes as in iMAP, NICE-SLAM, Co-SLAM etc...
 ```bash
 bash scripts/download_replica.sh
 ```
 
-* TUM RGB-D:
+* **TUM RGB-D:** <br />
 Use the following script to download the data. Data is saved under `./Datasets/TUM-RGBD`.
 ```bash
 bash scripts/download_tum.sh
 ```
 
 ### Pre-process
-The following steps show how to pre-process the data for a given scene.
+The following steps show how to pre-process the data for a given scene. <br />
+
+1. preprocess camera poses:
+```
+python tools_make_data/preprocess_camera_poses.py --config configs/Replica/replica_office0.yml
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+2. [OPTIONAL] precompute images sharpness:
+```
+python tools_instant_ngp/precompute_sharpness.py --config tools_neurips/batch_scripts/configs/ScanNet/scene_0000.yml
+```
+
+3. Build point cloud (for scene scaling):
+```
+python tools_instant_ngp/save_input_pc_for_init_scene_scaling.py --config tools_neurips/batch_scripts/configs/ScanNet/scene_0000.yml
+```
+if you turn off the `POSES_FILENAME` variable (ie "") in config file that script will save the raw PC without using preprocessed poses
+
+4. Estimate scaling parameters:
+```
+python tools_instant_ngp/estimate_scale_and_shift_using_GT_pc.py --config tools_neurips/batch_scripts/configs/ScanNet/scene_0000.yml
+```
+
+5. Prepare data for NGP:
+```
+python tools_instant_ngp/prepare_ngp_format_dataset.py --config tools_neurips/batch_scripts/configs/ScanNet/scene_0000.yml
+python tools_instant_ngp/add_poses_to_transforms_json.py --config tools_neurips/batch_scripts/configs/ScanNet/scannet_scene0000.ym
+```
+
+6. [OPTIONAL] Build point cloud asin NGP (for debugging):
+```
+python tools_instant_ngp/save_GT_pc_from_prepared_data_from_ngp.py --config tools_neurips/batch_scripts/configs/ScanNet/scannet_scene0000.yml --parent tools_neurips/batch_scripts/configs/ScanNet/experiment_hyperparams/base.yml
+```
+
+7. [OPTIONAL] Build Camera poses ply (for debugging):
+```
+python tools_instant_ngp/save_input_poses.py --config tools_neurips/batch_scripts/configs/ScanNet/scannet_scene0000.yml
+python tools_instant_ngp/save_input_poses_ngp.py --config tools_neurips/batch_scripts/configs/ScanNet/scannet_scene0000.yml --parent tools_neurips/batch_scripts/configs/ScanNet/experiment_hyperparams/base.yml
+```
+if you turn off the `POSES_FILENAME` variable (ie "") in config file the `save_input_poses.py` will save the raw Cameras without using preprocessed poses
+
+
+
 
 
 ## Demo

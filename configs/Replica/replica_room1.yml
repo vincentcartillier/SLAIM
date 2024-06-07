@@ -1,0 +1,39 @@
+PARENT: "replica.yml"
+META:
+    OUTPUT_DIR: "data"
+    NAME_EXPERIMENT: "Replica_room1"
+    RUN_ID: 0
+DATASET:
+    NAME: "ReplicaDatasetInstantNGP"
+    INPUT_FOLDER: "Datasets/Replica/room1"
+    CROP_SIZE:
+        ENABLED: False
+    CROP_EDGE:
+        ENABLED: False
+    PNG_DEPTH_SCALE: 6553.5
+    POSES_FILENAME: "data/Replica_room1/0/poses_processed_NGP.json"
+    SHARPNESS_FILENAME: "data/Replica_room1/0/preprocess_sharpness.json"
+    NGP_PREPROCESSED_DATA_FILENAME: "data/Replica_room1/0/preprocessed_dataset/transforms_with_poses.json"
+    POSES_SCALE: 4.294267445782099
+    POSES_CENTER_POINT: [ 0.02346366, -1.91916895, 0.25305015]
+    POSES_UP_VECTOR: [-0.0738406, 0.00162282, -0.99726874]
+    DESIRED_RESOLUTION: 674 #(1cm rez)
+    MARCHING_CUBES_BOUND: [[-5.6,1.4],[-3.2,2.8],[-1.6,1.8]] 
+    FRAME_SAMPLING_RATE: 1
+    KEEP_DATA_ON_CPU: False
+RENDERER: #here for the hyper-params
+    NAME: "RendererInstantNGP" # implemented in NGP
+    IMAGE_H: 680
+    IMAGE_W: 1200
+    FX: 600.0
+    FY: 600.0
+    CX: 599.5
+    CY: 339.5
+    SCALE: 0.03457481392416544
+    OFFSET: [0.41648454, 0.52357791, 0.276185]
+    AABB_SCALE: 1
+    DISTORTION:
+        ENABLED: False
+    NEAR: 0.0
+    FAR: 10.0
+VERSION: 2

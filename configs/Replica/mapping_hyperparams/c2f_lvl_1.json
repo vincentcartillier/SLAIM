@@ -1,0 +1,22 @@
+[
+    {
+        "mgl": 0.5,
+        "gpl": 1,
+        "lr_factor": 0.1,
+        "lr_factor_rot": 0.2,
+        "lbd_rgb_factor": 0.01,
+        "lbd_depth_factor": 0.5,
+        "iterations": 10,
+        "n_steps_between_cam_updates": 10
+    },
+    {
+        "mgl": 1.0,
+        "gpl": 0,
+        "lr_factor": 1.0,
+        "lr_factor_rot": 1.0,
+        "lbd_rgb_factor": 1.0,
+        "lbd_depth_factor": 1.0,
+        "iterations": 20,
+        "n_steps_between_cam_updates": 5
+    }
+]

@@ -12,3 +12,4 @@ tqdm==4.62.3
 trimesh==3.17.0
 yacs==0.1.8
 zipp==3.8.1
+torch==1.12.1

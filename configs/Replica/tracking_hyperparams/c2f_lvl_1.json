@@ -1,0 +1,18 @@
+[
+    {
+        "mgl": 0.5,
+        "gpl": 1,
+        "lr_factor": 0.4,
+        "lr_factor_rot": 1.0,
+        "iterations": 10,
+        "n_steps_between_cam_updates": 5
+    },
+    {
+        "mgl": 1.0,
+        "gpl": 0,
+        "lr_factor": 1.0,
+        "lr_factor_rot": 1.0,
+        "iterations": 10,
+        "n_steps_between_cam_updates": 1
+    }
+]
