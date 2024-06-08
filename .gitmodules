@@ -2,3 +2,6 @@
 	path = dependencies/instant-ngp
 	url = git@github.com:vincentcartillier/instant-ngp.git
 	branch = neurips2023
+[submodule "dependencies/neural_slam_eval"]
+	path = dependencies/neural_slam_eval
+	url = git@github.com:JingwenWang95/neural_slam_eval.git

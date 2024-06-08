@@ -118,29 +118,26 @@ python tools_make_data/prepare_ngp_format_dataset.py --config data/Replica_offic
 python tools_make_data/add_poses_to_transforms_json.py --config data/Replica_office0/0/configs.yml
 ```
 
-5. [OPTIONAL] Build point cloud asin NGP (for debugging):
+## RUN
+Replica <output_dir> with the target directory (eg. `./outputs/`).
+
+* **ScanNet:** <br />
+
+* **Replica:** <br />
+```bash
+bash tools_experiments/run_replica.sh <output_dir> data/Replica_office0/0/configs.yml configs/Replica/experiment_hyperparams/base.yml
 ```
-python tools_instant_ngp/save_GT_pc_from_prepared_data_from_ngp.py --config tools_neurips/batch_scripts/configs/ScanNet/scannet_scene0000.yml --parent tools_neurips/batch_scripts/configs/ScanNet/experiment_hyperparams/base.yml
+If you wish to do 3D reconstruction evaluation, you will need to download the corresponding data for mesh culling on the [neural_slam_eval](https://github.com/JingwenWang95/neural_slam_eval) repo and place it under `dependencies/neural_slam_eval/data/CoSLAM_data`. And you'll also have to symlink the Replica data to that repo
+```
+ln -s Datasets/Replica dependencies/neural_slam_eval/data
+```
+Then run:
+```bash
+bash tools_experiments/run_replica_eval_3D.sh <output_dir> data/Replica_office0/0/configs.yml configs/Replica/experiment_hyperparams/base.yml
 ```
 
-6. [OPTIONAL] Build Camera poses ply (for debugging):
-```
-python tools_instant_ngp/save_input_poses.py --config tools_neurips/batch_scripts/configs/ScanNet/scannet_scene0000.yml
-python tools_instant_ngp/save_input_poses_ngp.py --config tools_neurips/batch_scripts/configs/ScanNet/scannet_scene0000.yml --parent tools_neurips/batch_scripts/configs/ScanNet/experiment_hyperparams/base.yml
-```
-if you turn off the `POSES_FILENAME` variable (ie "") in config file the `save_input_poses.py` will save the raw Cameras without using preprocessed poses
 
+* **TUM RGB-D:** <br />
 
-
-
-
-## Demo
-
-
-
-
-
-
-## Workflow
 
 
