@@ -2,7 +2,6 @@ import os
 import cv2
 import json
 import glob
-import errno
 import torch
 import numpy as np
 import torch.nn.functional as F
@@ -16,7 +15,7 @@ __all__ = ["ReplicaDatasetInstantNGP"]
 
 @DATASET_REGISTRY.register()
 class ReplicaDatasetInstantNGP(BaseDataset):
-    
+
     def _parse_cfg(self, cfg):
         self.near = cfg.RENDERER.NEAR
         self.far = cfg.RENDERER.FAR
@@ -34,7 +33,7 @@ class ReplicaDatasetInstantNGP(BaseDataset):
         super(ReplicaDatasetInstantNGP, self).__init__(cfg)
 
         self._parse_cfg(cfg)
-        
+
         self.color_paths = sorted(
             glob.glob(
                 os.path.join(
@@ -55,7 +54,7 @@ class ReplicaDatasetInstantNGP(BaseDataset):
         self.load_poses()
 
     def load_poses(self, ):
-        
+
         if self.poses_filename and os.path.isfile(self.poses_filename):
             processed_poses = json.load(open(self.poses_filename, 'r'))
             poses = []
@@ -64,12 +63,12 @@ class ReplicaDatasetInstantNGP(BaseDataset):
                 c2w = c2w.astype(np.float32)
                 poses.append(c2w)
             self.poses = poses
-        
+
         else:
             filename = os.path.join(
                 self.input_folder,
                 'traj.txt'
-            ) 
+            )
             self.poses = []
             with open(filename, "r") as f:
                 lines = f.readlines()
@@ -80,8 +79,8 @@ class ReplicaDatasetInstantNGP(BaseDataset):
                 c2w[:3, 2] *= -1
                 #c2w = torch.from_numpy(c2w).float()
                 self.poses.append(c2w.astype(np.float))
- 
- 
+
+
 
     def get_all_poses(self,):
         return self.poses
@@ -104,14 +103,14 @@ class ReplicaDatasetInstantNGP(BaseDataset):
         # -- load RGB image
         color_path = self.color_paths[index]
         color_data = cv2.imread(color_path)
-        
+
         # -- load depth
         depth_path = self.depth_paths[index]
         if '.png' in depth_path:
             depth_data = cv2.imread(depth_path, cv2.IMREAD_UNCHANGED)
         elif '.exr' in depth_path:
             depth_data = readEXR_onlydepth(depth_path)
-        
+
         # -- undistord image id needed
         if self.distortion is not None:
             K = np.eye(3)
@@ -126,42 +125,42 @@ class ReplicaDatasetInstantNGP(BaseDataset):
         color_data = color_data / 255.
 
         depth_data = depth_data.astype(np.float32) / self.png_depth_scale
-        
+
         depth_data[depth_data < self.near] = 0
         depth_data[depth_data > self.far] = 0
-        
+
         H, W = depth_data.shape
         color_data = cv2.resize(color_data, (W, H))
-        
+
         if self.crop_size is not None:
             # -- convert to torch for cropping
             color_data = torch.from_numpy(color_data)
             depth_data = torch.from_numpy(depth_data)
- 
+
             # follow the pre-processing step in lietorch, actually is resize
             color_data = color_data.permute(2, 0, 1)
             color_data = F.interpolate(
-                color_data[None], 
-                self.crop_size, 
-                mode='bilinear', 
+                color_data[None],
+                self.crop_size,
+                mode='bilinear',
                 align_corners=True)[0]
-            
+
             depth_data = F.interpolate(
-                depth_data[None, None], 
-                self.crop_size, 
+                depth_data[None, None],
+                self.crop_size,
                 mode='nearest')[0, 0]
-            
+
             color_data = color_data.permute(1, 2, 0).contiguous()
-            
+
             color_data = color_data.numpy()
             depth_data = depth_data.numpy()
-        
+
         if self.crop_edge is not None:
             # crop image edge, there are invalid value on the edge of the color image
             edge = self.crop_edge
             color_data = color_data[edge:-edge, edge:-edge]
             depth_data = depth_data[edge:-edge, edge:-edge]
-        
+
         # -- get pose
         pose = self.poses[index]
 
@@ -169,12 +168,12 @@ class ReplicaDatasetInstantNGP(BaseDataset):
         depth_data = depth_data.astype(np.float32)
         depth_data[depth_data<0.0] = 0.0
         pose = pose.astype(np.float32)
-        
+
         # -- convert data back to Instant NGP format
         color_data *= 255.0
         color_data = color_data.astype(np.uint8)
         color_data = cv2.cvtColor(color_data, cv2.COLOR_RGB2RGBA)
-        
+
         if self.poses_scale is not None:
             depth_data *= self.poses_scale
 
@@ -189,7 +188,7 @@ class ReplicaDatasetInstantNGP(BaseDataset):
             'depth_filename': depth_path
         }
 
-    
+
     def __len__(self):
         return self.n_img
 

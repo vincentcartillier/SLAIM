@@ -1,6 +1,4 @@
-import torch
 from .build import RENDERER_REGISTRY
-import torch.nn.functional as F
 import numpy as np
 
 __all__ = ["RendererInstantNGP"]

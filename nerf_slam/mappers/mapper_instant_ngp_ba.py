@@ -1,10 +1,7 @@
 import os
 import cv2
 import json
-import torch
 import numpy as np
-from tqdm import tqdm
-from scipy.spatial.transform import Rotation
 
 from .build import MAPPER_REGISTRY
 
@@ -579,8 +576,6 @@ class MapperInstantNGP_C2FBA(object):
             reverse=True
         )
 
-        #selected_keyframe_list = [dic['id'] for dic in list_keyframe if dic['percent_inside'] > 0.00]
-        #selected_keyframe_list = list(np.random.permutation(np.array(selected_keyframe_list))[:k])
         selected_keyframe_list = [dic['id'] for dic in list_keyframe]
         selected_keyframe_list = selected_keyframe_list[:k]
         return selected_keyframe_list

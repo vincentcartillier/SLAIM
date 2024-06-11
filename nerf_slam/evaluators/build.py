@@ -1,5 +1,3 @@
-import torch
-
 from nerf_slam.utils.registry import Registry
 
 EVALUATOR_REGISTRY = Registry("EVALUATOR")

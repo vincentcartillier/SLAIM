@@ -1,5 +1,3 @@
-import torch
-
 from nerf_slam.utils.registry import Registry
 
 RENDERER_REGISTRY = Registry("RENDERER")

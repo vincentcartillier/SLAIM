@@ -36,7 +36,7 @@ def completion_ratio(gt_points, rec_points, dist_th=0.05):
 def accuracy(gt_points, rec_points, debug_dir=None):
     gt_points_kd_tree = KDTree(gt_points)
     distances, _ = gt_points_kd_tree.query(rec_points)
-    
+
     #DEBUG
     #DEBUG
     if debug_dir is not None:
@@ -51,7 +51,7 @@ def accuracy(gt_points, rec_points, debug_dir=None):
         o3d.io.write_point_cloud(filename, tmp_pcd)
     #DEBUG
     #DEBUG
-    
+
     acc = np.mean(distances)
     return acc
 
@@ -266,7 +266,7 @@ def calc_2d_metric_old(rec_meshfile, gt_meshfile, align=True, n_imgs=1000):
 
 
 
-def calc_2d_metric(rec_meshfile, gt_meshfile, unseen_gt_pcd_file, 
+def calc_2d_metric(rec_meshfile, gt_meshfile, unseen_gt_pcd_file,
                    pose_file=None, gt_depth_render_file=None,
                    depth_render_file=None, suffix="virt_cams",
                    align=True, n_imgs=1000, not_counting_missing_depth=True,
@@ -286,7 +286,7 @@ def calc_2d_metric(rec_meshfile, gt_meshfile, unseen_gt_pcd_file,
     gt_mesh = o3d.io.read_triangle_mesh(gt_meshfile)
     rec_mesh = o3d.io.read_triangle_mesh(rec_meshfile)
     pc_unseen = np.load(unseen_gt_pcd_file)
-    
+
     if pose_file and os.path.exists(pose_file):
         sampled_poses = np.load(pose_file)["poses"]
         assert len(sampled_poses) == n_imgs
@@ -371,7 +371,7 @@ def calc_2d_metric(rec_meshfile, gt_meshfile, unseen_gt_pcd_file,
             gt_depths.append(gt_depth)
         else:
             gt_depth = gt_depth_renderings[i]
- 
+
         if depth_renderings is None:
             vis.add_geometry(rec_mesh, reset_bounding_box=True,)
             ctr.convert_from_pinhole_camera_parameters(param,True)
@@ -383,7 +383,7 @@ def calc_2d_metric(rec_meshfile, gt_meshfile, unseen_gt_pcd_file,
             depths.append(ours_depth)
         else:
             ours_depth = depth_renderings[i]
-        
+
 
         if not_counting_missing_depth:
             valid_mask = (gt_depth > 0.) & (gt_depth < 19.)
@@ -408,7 +408,7 @@ def calc_2d_metric(rec_meshfile, gt_meshfile, unseen_gt_pcd_file,
     elif not os.path.exists(depth_render_file):
         np.savez(depth_render_file, depths=depths)
 
-    
+
     errors = np.array(errors)
     # from m to cm
     print('Depth L1(cm): ', errors.mean()*100)
@@ -437,7 +437,7 @@ def render_depth(inputs):
             o3d.utility.Vector3dVector(pred_vertices),
             o3d.utility.Vector3iVector(pred_triangles)
         )
- 
+
     poses = inputs["poses"]
     H = inputs["H"]
     W = inputs["W"]
@@ -469,7 +469,7 @@ def render_depth(inputs):
             gt_depth = np.asarray(gt_depth)
             vis.remove_geometry(gt_mesh, reset_bounding_box=True,)
             gt_depth_maps.append(gt_depth)
- 
+
         if render_pred:
             vis.add_geometry(pred_mesh, reset_bounding_box=True,)
             ctr.convert_from_pinhole_camera_parameters(param,True)
@@ -479,7 +479,7 @@ def render_depth(inputs):
             ours_depth = np.asarray(ours_depth)
             vis.remove_geometry(pred_mesh, reset_bounding_box=True,)
             pred_depth_maps.append(ours_depth)
-        
+
 
     return {"index":i, "gt_depths": gt_depth_maps, "pred_depths": pred_depth_maps}
 
@@ -488,7 +488,7 @@ def render_depth(inputs):
 
 
 
-def calc_2d_metric_parallel(rec_meshfile, gt_meshfile, unseen_gt_pcd_file, 
+def calc_2d_metric_parallel(rec_meshfile, gt_meshfile, unseen_gt_pcd_file,
                    pose_file=None, gt_depth_render_file=None,
                    depth_render_file=None, suffix="virt_cams",
                    align=True, n_imgs=1000, not_counting_missing_depth=True,
@@ -520,7 +520,7 @@ def calc_2d_metric_parallel(rec_meshfile, gt_meshfile, unseen_gt_pcd_file,
         pc_unseen = np.load(unseen_gt_pcd_file)
     else:
         pc_unseen=None
-    
+
     if pose_file and os.path.exists(pose_file):
         sampled_poses = np.load(pose_file)["poses"]
         assert len(sampled_poses) == n_imgs
@@ -555,14 +555,14 @@ def calc_2d_metric_parallel(rec_meshfile, gt_meshfile, unseen_gt_pcd_file,
 
     # get vacant area inside the room
     extents, transform = get_cam_position(gt_meshfile, sx=sx, sy=sy, sz=sz, dx=dx, dy=dy, dz=dz)
-    
+
     errors = []
     poses = []
     gt_depths = []
     depths = []
 
     if (gt_depth_renderings is None) or (depth_renderings is None):
-        # get the poses 
+        # get the poses
         if sampled_poses is None:
             for i in range(n_imgs):
                 while True:
@@ -589,7 +589,7 @@ def calc_2d_metric_parallel(rec_meshfile, gt_meshfile, unseen_gt_pcd_file,
 
         gt_vertices = np.array(gt_mesh.vertices)
         gt_triangles = np.array(gt_mesh.triangles)
-        
+
         pred_vertices = np.array(rec_mesh.vertices)
         pred_triangles = np.array(rec_mesh.triangles)
 
@@ -609,7 +609,7 @@ def calc_2d_metric_parallel(rec_meshfile, gt_meshfile, unseen_gt_pcd_file,
                   } for i in range(0,len(poses),BS)]
 
         pool = Pool(8)
-        
+
         results = list(
             tqdm(
                 pool.imap_unordered(
@@ -619,7 +619,7 @@ def calc_2d_metric_parallel(rec_meshfile, gt_meshfile, unseen_gt_pcd_file,
         )
 
         results = sorted(results, key=lambda d: d["index"])
-        
+
         if gt_depth_renderings is None:
             for r in results:
                 for d in r["gt_depths"]:
@@ -633,7 +633,7 @@ def calc_2d_metric_parallel(rec_meshfile, gt_meshfile, unseen_gt_pcd_file,
                     depths.append(d)
         else:
             depths = depth_renderings
-        
+
         assert len(depths) == len(poses)
         assert len(gt_depths) == len(poses)
 
@@ -668,7 +668,7 @@ def calc_2d_metric_parallel(rec_meshfile, gt_meshfile, unseen_gt_pcd_file,
     elif not os.path.exists(depth_render_file):
         np.savez(depth_render_file, depths=depths)
 
-    
+
     errors = np.array(errors)
     # from m to cm
     print('Depth L1(cm): ', errors.mean()*100)
@@ -704,7 +704,7 @@ class Evaluator3DReconstruction():
              use_virt_cams=True, debug_dir=None,recompute_2d_depths=False):
 
         if mode == '2d':
-            
+
             assert self.dataset_type in ["Replica", "RGBD"], "Unknown dataset type..."
 
             if use_virt_cams:
@@ -714,26 +714,26 @@ class Evaluator3DReconstruction():
                 assert os.path.isfile(unseen_pc_file)
                 assert os.path.isfile(pose_file)
                 gt_depth_render_file = os.path.join(eval_data_dir, "gt_depths_1000.npz")
-                
+
                 pred_data_dir = os.path.dirname(rec_mesh_filename)
                 depth_render_file = os.path.join(pred_data_dir, "depths_virt_cams_1000.npz")
                 if recompute_2d_depths and os.path.exists(depth_render_file):
                     os.remove(depth_render_file)
-                
+
                 suffix="virt_cams"
             else:
                 eval_data_dir = os.path.dirname(gt_mesh_filename)
-                unseen_pc_file = "" 
+                unseen_pc_file = ""
                 pose_file = os.path.join(eval_data_dir, "sampled_poses_1000.npz")
                 assert os.path.isfile(pose_file)
                 gt_depth_render_file = os.path.join(eval_data_dir, "gt_depths_1000.npz")
-                
+
                 pred_data_dir = os.path.dirname(rec_mesh_filename)
                 depth_render_file = os.path.join(pred_data_dir, "depths_traj_cams_1000.npz")
                 if recompute_2d_depths and os.path.exists(depth_render_file):
                     os.remove(depth_render_file)
                 suffix="traj_cams"
- 
+
 
             #TODO: this should go in configs.
             if self.dataset_type == "Replica":  # follow NICE-SLAM
@@ -742,16 +742,16 @@ class Evaluator3DReconstruction():
                 sx, sy, sz, dx, dy, dz = 0.3, 0.5, 0.5, 1.2, 0.0, 1.8
             else:
                 sx, sy, sz, dx, dy, dz = 0.3, 0.6, 0.6, 0.0, 0.0, 0.0
-            
+
             result = calc_2d_metric_parallel(
-                rec_mesh_filename, 
-                gt_mesh_filename, 
-                unseen_pc_file, pose_file=pose_file, 
+                rec_mesh_filename,
+                gt_mesh_filename,
+                unseen_pc_file, pose_file=pose_file,
                 gt_depth_render_file=gt_depth_render_file,
-                depth_render_file=depth_render_file, 
+                depth_render_file=depth_render_file,
                 n_imgs=1000,
                 suffix=suffix,
-                not_counting_missing_depth=True, 
+                not_counting_missing_depth=True,
                 sx=sx, sy=sy, sz=sz, dx=dx, dy=dy, dz=dz
             )
 

@@ -17,12 +17,12 @@ class EvaluatorATEInstantNGP():
 
     def __init__(self, cfg):
         self._parse_cfg(cfg)
-   
-    
+
+
     def get_tensor_from_camera(self, T):
         """
         Convert transformation matrix to quaternion and translation.
-        /!\ here we are returning [t, quat] 
+        /!\ here we are returning [t, quat]
         This is different from the tracking method ([quat,t])
         """
         T = T.detach().cpu().numpy()
@@ -41,7 +41,7 @@ class EvaluatorATEInstantNGP():
             c2w = c2w_list[i]
             c2w = np.asarray(c2w)
             c2w = torch.from_numpy(c2w)
-            
+
             poses.append(self.get_tensor_from_camera(c2w))
             mask.append(1)
         poses = torch.stack(poses)
@@ -51,9 +51,9 @@ class EvaluatorATEInstantNGP():
 
 
 
-    def eval(self, 
-             pred, 
-             gt, 
+    def eval(self,
+             pred,
+             gt,
              viz_filename=None):
         """
         TODO: Need to define pred and gt formats
@@ -63,7 +63,7 @@ class EvaluatorATEInstantNGP():
         # -- preprocess poses
         poses_gt, mask = self.convert_poses(gt)
         poses_pred, _ = self.convert_poses(pred)
-        
+
         # -- eval
         poses_gt = poses_gt.cpu().numpy()
         poses_pred = poses_pred.cpu().numpy()
@@ -76,9 +76,9 @@ class EvaluatorATEInstantNGP():
             plot=""
         else:
             plot=viz_filename
-        
+
         results = evaluate_ate(poses_gt, poses_pred, plot)
-        
+
         return results
 
 
