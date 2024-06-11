@@ -152,5 +152,5 @@ bash tools_experiments/run_replica_eval_3D.sh <output_dir> data/Replica_office0/
 
 
 ## Acknowledgment
-We adapt our code based of the original Instant-NGP [repo](https://github.com/NVlabs/instant-ngp). We thank @Thomas Muller (a.k.a Tom94) for their help answering our questions while developping. We also thank the folks from [Co-SLAM](https://github.com/HengyiWang/Co-SLAM) from sharing their code early to us. Thanks a lot for the awesome repos and making code available top the community!
+Our code is based of the original Instant-NGP [repo](https://github.com/NVlabs/instant-ngp). We thank @Thomas Muller (a.k.a Tom94) for their help answering our questions while developping. We also thank the folks from [Co-SLAM](https://github.com/HengyiWang/Co-SLAM) from sharing their code early to us. Thanks a lot for the awesome repos and making code available to the community!
 
