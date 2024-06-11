@@ -11,7 +11,6 @@ import json
 
 
 from nerf_slam.config import get_cfg
-from nerf_slam.models import build_model
 from nerf_slam.mappers import build_mapper
 from nerf_slam.trackers import build_tracker
 from nerf_slam.renderers import build_renderer

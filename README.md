@@ -129,7 +129,16 @@ bash tools_experiments/run_replica.sh <output_dir> data/Replica_office0/0/config
 ```
 If you wish to do 3D reconstruction evaluation, you will need to download the corresponding data for mesh culling on the [neural_slam_eval](https://github.com/JingwenWang95/neural_slam_eval) repo and place it under `dependencies/neural_slam_eval/data/CoSLAM_data`. And you'll also have to symlink the Replica data to that repo
 ```
-ln -s Datasets/Replica dependencies/neural_slam_eval/data
+cd dependencies/neural_slam_eval/data
+ln -s ../../../Datasets/Replica/
+cd ../../../Datasets/
+ln -s ../dependencies/neural_slam_eval/data/CoSLAM_data/
+```
+You'll also need to setup the corresponding conda env. Note that you may want to manually compile Open3d with headless rendering if you are working on a cluster for instance. Please refere to this [page](https://www.open3d.org/docs/latest/tutorial/Advanced/headless_rendering.html) for instruction on how to compile.
+```bash
+conda create -n slaim_3d_eval python=3.8
+conda activate slaim_3d_eval
+pip install -r dependencies/neural_slam_eval/requirements.txt
 ```
 Then run:
 ```bash
@@ -140,4 +149,8 @@ bash tools_experiments/run_replica_eval_3D.sh <output_dir> data/Replica_office0/
 * **TUM RGB-D:** <br />
 
 
+
+
+## Acknowledgment
+We adapt our code based of the original Instant-NGP [repo](https://github.com/NVlabs/instant-ngp). We thank @Thomas Muller (a.k.a Tom94) for their help answering our questions while developping. We also thank the folks from [Co-SLAM](https://github.com/HengyiWang/Co-SLAM) from sharing their code early to us. Thanks a lot for the awesome repos and making code available top the community!
 

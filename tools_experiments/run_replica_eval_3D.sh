@@ -19,16 +19,18 @@ echo "CONFIG FILE: $CONFIG_FILE"
 echo "PARENT FILE: $PARENT_FILE"
 echo "SCENE NAME: $SCENE_NAME"
 echo "SCENE NAME SHORT: $SCENE_NAME_SHORT"
+echo "USE VIRTUAL CAMERAS: $USE_VIRT_CAMS_IN_EVAL"
 echo "    --  $RUN_ID"
 
 config_file_dst="$OUTPUT_DIR/$SCENE_NAME/$RUN_ID/configs.yml"
 
 conda activate slaim
-#python tools_make_data/save_3d_mesh.py --config $config_file_dst
-#python tools_make_data/rotate_final_mesh.py --config $config_file_dst
 
+python tools_make_data/save_3d_mesh.py --config $config_file_dst
+python tools_make_data/rotate_final_mesh.py --config $config_file_dst
 
-#TODO: use my own neural_slam_eval version!!
+conda activate slaim_3d_eval
+
 cd dependencies/neural_slam_eval/
 input_mesh="../../$OUTPUT_DIR/$SCENE_NAME/$RUN_ID/mesh_final.ply"
 output_mesh="../../$OUTPUT_DIR/$SCENE_NAME/$RUN_ID/mesh_final_coslam_culling.ply"
@@ -41,7 +43,7 @@ else
 fi
 
 cd ../../
-#python tools_make_data/clean_3d_mesh_connected_components.py --config $config_file_dst
-#python tools_make_data/check_reconstruction.py --config $config_file_dst --eval_rec_mode "3d"
-#python tools_make_data/check_reconstruction.py --config $config_file_dst --eval_rec_mode "2d" --recompute_2d_depths
+python tools_make_data/clean_3d_mesh_connected_components.py --config $config_file_dst
+python tools_make_data/check_reconstruction.py --config $config_file_dst --eval_rec_mode "3d"
+python tools_make_data/check_reconstruction.py --config $config_file_dst --eval_rec_mode "2d" --recompute_2d_depths
 
