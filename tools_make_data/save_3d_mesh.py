@@ -1,30 +1,19 @@
 import os
 import sys
-sys.path.append("./") # remove when project is compiled
 import json
-import torch
 import numpy as np
 from tqdm import tqdm
-from imageio import imwrite
-from pathlib import Path
 
+sys.path.append("./") 
 from nerf_slam.config import get_cfg
-from nerf_slam.models import build_model
-from nerf_slam.mappers import build_mapper
-from nerf_slam.trackers import build_tracker
 from nerf_slam.renderers import build_renderer
-from nerf_slam.datasets import build_dataset
 from nerf_slam.utils import default_argument_parser
-from nerf_slam.utils import build_experiment_directory
-from nerf_slam.runners import build_runner
-from nerf_slam.evaluators import build_evaluator
 
 # -- linking Instant-NGP here
-# /!\ should link directly in this repo as a submodule
-sys.path.append("/srv/essa-lab/flash3/vcartillier3/instant-ngp/build/")
+sys.path.append("dependencies/instant-ngp/build/")
 import pyngp as ngp # noqa
 
-sys.path.append("/srv/essa-lab/flash3/vcartillier3/nerf-slam/nerf_slam/utils/")
+sys.path.append("nerf_slam/utils/")
 from ngp_conversion_utils import convert_marching_cubes_bound_to_NGP
 from get_convex_hull import get_convex_hull_mask
 
@@ -180,13 +169,6 @@ def main(args):
     instant_ngp.n_elements_per_vertex_during_meshing_with_anti_aliasing=16
     ##DEBUG
     ##DEBUG
-
-    #print("bound (aabb): ", bound.min, bound.max)
-    #print("bound is empty?: ", bound.is_empty())
-    #print(" (m_aabb): ", instant_ngp.aabb.min, instant_ngp.aabb.max)
-    #print("render_aabb (m_render_aabb): ", instant_ngp.render_aabb.min, instant_ngp.render_aabb.max)
-    #print("render_aabb_to_local (m_render_aabb_to_local): ", instant_ngp.get_render_aabb_to_local())
-    #stop
     
     instant_ngp.compute_and_save_marching_cubes_mesh(
         output_filename,

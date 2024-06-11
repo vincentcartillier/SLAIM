@@ -200,7 +200,7 @@ def get_convex_hull_mask(instant_ngp, renderer, cfg, res):
 
     mesh_convex_hull = get_bound_from_frames(kf_poses, instant_ngp, H, W, fx, fy, cx, cy, mesh_bound_scale=1.02, scale=1)
 
-      output_convex_hull_filename = os.path.join(
+    output_convex_hull_filename = os.path.join(
         experiment_dir,
         'mesh_convex_hull.obj'
     )
