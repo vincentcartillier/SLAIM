@@ -111,7 +111,7 @@ def main(args):
         poses_scale = cfg.DATASET.POSES_SCALE
     else:
         poses_scale = 1.0
-    
+
     print("Poses scale: ", poses_scale)
 
     depth_scaler = depth_scale / poses_scale
@@ -211,9 +211,9 @@ def main(args):
 
     json.dump(data, open(output_filename, "w"))
     print("Saving file in: ", output_filename)
-    
+
     cfg.defrost()
-    cfg.DATASET.NGP_PREPROCESSED_DATA_FILENAME = output_filename 
+    cfg.DATASET.NGP_PREPROCESSED_DATA_FILENAME = output_filename
     cfg.freeze()
     with open(os.path.join(output_dir, "configs.yml"), "w") as f:
           f.write(cfg.dump())

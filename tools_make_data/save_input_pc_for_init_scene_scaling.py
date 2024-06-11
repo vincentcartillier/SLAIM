@@ -142,7 +142,7 @@ def main(args):
                'W': W,
                'K': K
               #} for i in range(0,len(dataset),1)]
-              } for i in range(0,len(dataset),10)] # for debugging NiceSLAM APT
+              } for i in range(0,len(dataset),2)] # for debugging NiceSLAM APT
 
     pool = Pool(16)
 

@@ -64,7 +64,7 @@ def main(args):
     scene_name = input_folder.rstrip('/').split('/')[-1]
     if 'Replica' in input_folder:
         if use_virt_cams_in_eval:
-            gt = os.path.join(f'Datasets/CoSLAM_data/{scene_name}/gt_mesh_cull_virt_cams.ply')
+            gt = os.path.join(f'Datasets/CoSLAM_data/Replica/{scene_name}/gt_mesh_cull_virt_cams.ply')
         else:
             gt = os.path.join(f'Datasets/Replica/{scene_name}/{scene_name}_mesh_culled_frust_occ.ply')
     elif 'neural_rgbd_data' in input_folder:
