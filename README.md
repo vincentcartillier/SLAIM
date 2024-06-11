@@ -94,6 +94,11 @@ bash scripts/download_tum.sh
 
 ### Pre-process
 The following steps show how to pre-process the data for a given scene. <br />
+All of the following commands are compiled in the following bash script:
+```bash
+bash tools_experiments/make_data.sh configs/Replica/replica_office0.yml
+```
+
 
 1. preprocess camera poses:
 ```
@@ -122,10 +127,13 @@ python tools_make_data/add_poses_to_transforms_json.py --config data/Replica_off
 Replica <output_dir> with the target directory (eg. `./outputs/`).
 
 * **ScanNet:** <br />
+```bash
+bash tools_experiments/run.sh <output_dir> data/ScanNet_scene0000/0/configs.yml configs/ScanNet/experiment_hyperparams/base.yml
+```
 
 * **Replica:** <br />
 ```bash
-bash tools_experiments/run_replica.sh <output_dir> data/Replica_office0/0/configs.yml configs/Replica/experiment_hyperparams/base.yml
+bash tools_experiments/run.sh <output_dir> data/Replica_office0/0/configs.yml configs/Replica/experiment_hyperparams/base.yml
 ```
 If you wish to do 3D reconstruction evaluation, you will need to download the corresponding data for mesh culling on the [neural_slam_eval](https://github.com/JingwenWang95/neural_slam_eval) repo and place it under `dependencies/neural_slam_eval/data/CoSLAM_data`. And you'll also have to symlink the Replica data to that repo
 ```
@@ -145,9 +153,10 @@ Then run:
 bash tools_experiments/run_replica_eval_3D.sh <output_dir> data/Replica_office0/0/configs.yml configs/Replica/experiment_hyperparams/base.yml
 ```
 
-
 * **TUM RGB-D:** <br />
-
+```bash
+bash tools_experiments/run.sh <output_dir> data/TUM_desk/0/configs.yml configs/TUM/experiment_hyperparams/base.yml
+```
 
 
 

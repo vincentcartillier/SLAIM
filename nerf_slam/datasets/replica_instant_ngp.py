@@ -27,8 +27,6 @@ class ReplicaDatasetInstantNGP(BaseDataset):
                  "If you are running iNGP, you might want to run preprocess_camera_poses.py first")
             self.poses_scale = None
 
-
-
     def __init__(self, cfg):
         super(ReplicaDatasetInstantNGP, self).__init__(cfg)
 

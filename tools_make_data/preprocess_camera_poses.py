@@ -49,6 +49,7 @@ def rotmat(a, b):
 def setup(args):
     cfg = get_cfg()
     cfg.merge_from_file(args.config)
+    cfg.DATASET.POSES_FILENAME=""
     cfg.freeze()
     build_experiment_directory(cfg)
     return cfg
@@ -191,6 +192,7 @@ def main(args):
     cfg.DATASET.POSES_CENTER_POINT = totp.tolist()
     cfg.DATASET.POSES_AVGLEN = avglen
     cfg.DATASET.POSES_SCALE = 4.0/avglen
+    cfg.DATASET.POSES_FILENAME=output_poses_filename
     cfg.freeze()
     with open(os.path.join(output_dir, "configs.yml"), "w") as f:
           f.write(cfg.dump())
