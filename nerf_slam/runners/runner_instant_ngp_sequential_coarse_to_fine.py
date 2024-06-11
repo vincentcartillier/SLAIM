@@ -14,7 +14,6 @@ from typing import Any, Dict, List, Optional, Tuple
 from .build import RUNNER_REGISTRY
 
 # -- linking Instant-NGP here
-# /!\ should link directly in this repo as a submodule
 import sys
 sys.path.append("dependencies/instant-ngp/build/")
 import pyngp as ngp # noqa
@@ -93,7 +92,7 @@ class RunnerInstantNGPSequentialCoarse2Fine():
 
         self.use_sharpness_in_keyframe_selection=cfg.RUNNER.USE_SHARPNESS_IN_KF_SELECTION
         self.sharpness_thresh=cfg.RUNNER.SHARPNESS_THRESH
-        
+
         self.add_motion_only_BA_trajectory_filler=cfg.RUNNER.ADD_MOTION_ONLY_BA_TRAJECTORY_FILLER
         self.motion_only_ba_iterations=cfg.RUNNER.MOTION_ONLY_BA_ITERATIONS
 
@@ -266,7 +265,7 @@ class RunnerInstantNGPSequentialCoarse2Fine():
         poses_list = [x.tolist() for x in poses_list]
         json.dump(poses_list, open(filename,'w'))
 
-    
+
     def save_keyframes(self, keyframes, filename):
         kfs = [x["index"] for x in keyframes]
         json.dump(kfs, open(filename,'w'))
@@ -293,9 +292,8 @@ class RunnerInstantNGPSequentialCoarse2Fine():
         fm = cv2.Laplacian(gray, cv2.CV_64F).var()
         return fm
 
-    
+
     def pose_trajectory_filler(self, poses, poses_delta, keyframes):
-        #import pdb; pdb.set_trace()
         N = len(poses_delta)
         M = len(keyframes)
         keyframe_ids = [x["index"] for x in keyframes]
@@ -319,20 +317,20 @@ class RunnerInstantNGPSequentialCoarse2Fine():
                         pad_width=[(0,1), (0,0)]
                     )
                     c2w_key[3,3] = 1.0
-                delta = poses_delta[i] 
+                delta = poses_delta[i]
                 new_poses[i] = delta @ c2w_key
         new_poses = [new_poses[i][:3,:] for i in range(N)]
         return new_poses
 
-    
+
     def motion_only_BA(self, poses, keyframes):
         N = len(poses)
         M = len(keyframes)
-        
+
         keyframe_ids = [x["index"] for x in keyframes]
         keyframe_index = 1
         keyframe_id_next = keyframe_ids[keyframe_index]
-        
+
         mapping_ids=[0]
         tracking_ids=[]
         for i in tqdm(range(1,N)):
@@ -382,14 +380,14 @@ class RunnerInstantNGPSequentialCoarse2Fine():
                 idx_images_for_mapping = mapping_ids,
                 idx_images_for_tracking = tracking_ids,
             )
- 
+
         camera_poses_ngp = []
         for i in range(N):
             c2w = self.instant_ngp.nerf.training.get_camera_extrinsics(i)
             camera_poses_ngp.append(c2w)
         return camera_poses_ngp
-        
- 
+
+
 
 
 
@@ -507,7 +505,7 @@ class RunnerInstantNGPSequentialCoarse2Fine():
         loss = -1
         n_since_kf = 0
         for i in range(1, num_images):
-            
+
             # -- -- -- --
             # -- -- -- --
             # -- -- -- --
@@ -558,7 +556,7 @@ class RunnerInstantNGPSequentialCoarse2Fine():
 
             # -- save relative pose of non-KF
             c2w_key = keyframes[-1]["c2w"]
-            delta_pose = cur_est_c2w @ np.linalg.inv(c2w_key) #TODO make sure c2w_key is 4x4
+            delta_pose = cur_est_c2w @ np.linalg.inv(c2w_key)
             camera_poses_delta.append(delta_pose)
 
             if not np.any(np.isinf(gt_c2w)):
@@ -618,7 +616,7 @@ class RunnerInstantNGPSequentialCoarse2Fine():
                     train_grid=False,
                     mapping_iterations=100,
                 )
-            
+
 
             do_mapping = (i%self.mapping_rate == 0) or (self.init_phase and (i<self.init_phase_iterations))
             do_local_mapping = self.do_local_mapping and not (self.init_phase and (i<self.init_phase_iterations))
@@ -823,7 +821,7 @@ class RunnerInstantNGPSequentialCoarse2Fine():
                     f'poses_{i}.json'
                 )
                 self.save_poses(camera_poses, poses_filename)
-                
+
                 keyframes_filename = os.path.join(
                     self.output_dir_poses,
                     f'keyframes_{i}.json'
@@ -840,7 +838,7 @@ class RunnerInstantNGPSequentialCoarse2Fine():
             f'final_delta_poses.json'
         )
         self.save_poses(camera_poses_delta, filename)
-                
+
         keyframes_filename = os.path.join(
             self.output_dir_poses,
             f'keyframes_final.json'
@@ -869,7 +867,7 @@ class RunnerInstantNGPSequentialCoarse2Fine():
             f'final_poses_ngp_rec.json'
         )
         self.save_poses(camera_poses_ngp_rec, filename)
-        
+
         if self.add_motion_only_BA_trajectory_filler:
             camera_poses_ngp_rec_motion_BA = self.motion_only_BA(
                 camera_poses_ngp_rec,
@@ -880,7 +878,7 @@ class RunnerInstantNGPSequentialCoarse2Fine():
                 f'final_poses_ngp_rec_motionBA.json'
             )
             self.save_poses(camera_poses_ngp_rec_motion_BA, filename)
- 
+
 
         # -- Final giant BA here
         if self.add_final_giant_BA:
@@ -917,7 +915,7 @@ class RunnerInstantNGPSequentialCoarse2Fine():
                 f'final_poses_ngp_after_final_giant_BA_rec.json'
             )
             self.save_poses(camera_poses_ngp_rec, filename)
-        
+
             if self.add_motion_only_BA_trajectory_filler:
                 camera_poses_ngp_rec_motion_BA = self.motion_only_BA(
                     camera_poses_ngp_rec,
@@ -928,7 +926,7 @@ class RunnerInstantNGPSequentialCoarse2Fine():
                     f'final_poses_ngp_after_final_giant_BA_rec_motionBA.json'
                 )
                 self.save_poses(camera_poses_ngp_rec_motion_BA, filename)
- 
+
 
 
 
