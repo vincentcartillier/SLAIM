@@ -1,22 +1,13 @@
 import os
 import sys
-sys.path.append("./") # remove when project is compiled
 import json
-import torch
 import numpy as np
-from tqdm import tqdm
-from imageio import imwrite
 from pathlib import Path
 
+sys.path.append("./")
 from nerf_slam.config import get_cfg
-from nerf_slam.models import build_model
-from nerf_slam.mappers import build_mapper
-from nerf_slam.trackers import build_tracker
-from nerf_slam.renderers import build_renderer
 from nerf_slam.datasets import build_dataset
 from nerf_slam.utils import default_argument_parser
-from nerf_slam.utils import build_experiment_directory
-from nerf_slam.runners import build_runner
 from nerf_slam.evaluators import build_evaluator
 
 
