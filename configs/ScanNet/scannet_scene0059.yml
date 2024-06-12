@@ -1,0 +1,40 @@
+PARENT: "scannet.yml"
+META:
+    OUTPUT_DIR: "data"
+    NAME_EXPERIMENT: "ScanNet_scene0059"
+    RUN_ID: 0
+DATASET:
+    NAME: "ScannetDatasetInstantNGP"
+    INPUT_FOLDER: "Datasets/scannet/scans/scene0059_00"
+    CROP_SIZE:
+        ENABLED: False
+    CROP_EDGE:
+        ENABLED: True
+        VALUE: 10
+    PNG_DEPTH_SCALE: 1000.
+    POSES_FILENAME: "data/ScanNet_scene0059/0/poses_processed_NGP.json"
+    SHARPNESS_FILENAME: "data/ScanNet_scene0059/0/preprocess_sharpness.json"
+    NGP_PREPROCESSED_DATA_FILENAME: "data/ScanNet_scene0059/0/preprocessed_dataset/transforms_with_poses.json"
+    POSES_SCALE: 3.3689748944075064
+    POSES_CENTER_POINT: [-4.00361228, 3.66943921, 1.34530244]
+    POSES_UP_VECTOR: [0.0438445, -0.00169735, -0.99903693]
+    DESIRED_RESOLUTION: 288 #(3.92cm rez)
+    MARCHING_CUBES_BOUND: [[-0.3,7.4],[-0.3,9.],[-0.3,3.]]
+    FRAME_SAMPLING_RATE: 1
+    KEEP_DATA_ON_CPU: False
+RENDERER: #here for the hyper-params
+    NAME: "RendererInstantNGP" # implemented in NGP
+    IMAGE_H: 480
+    IMAGE_W: 640
+    FX: 577.590698
+    FY: 578.729797
+    CX: 318.905426
+    CY: 242.683609
+    SCALE: 0.0263069495834085
+    OFFSET: [0.46796392, 0.57111021, 0.22633624] 
+    AABB_SCALE: 1
+    DISTORTION:
+        ENABLED: False
+    NEAR: 0.0
+    FAR: 8.0
+VERSION: 2
