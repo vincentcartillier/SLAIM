@@ -1,0 +1,39 @@
+PARENT: "tum.yml"
+META:
+    OUTPUT_DIR: "data"
+    NAME_EXPERIMENT: "TUM_desk"
+    RUN_ID: 0
+DATASET:
+    NAME: "TUMDatasetInstantNGP"
+    INPUT_FOLDER: "Datasets/TUM_RGBD/rgbd_dataset_freiburg1_desk"
+    CROP_SIZE:
+        ENABLED: True
+        VALUE: [384,512]
+    CROP_EDGE:
+        ENABLED: True
+        VALUE: 8
+    PNG_DEPTH_SCALE: 5000.0
+    POSES_FILENAME: "data/TUM_desk/0/poses_processed_NGP.json"
+    SHARPNESS_FILENAME: "data/TUM_desk/0/preprocess_sharpness.json"
+    NGP_PREPROCESSED_DATA_FILENAME: "data/TUM_desk/0/preprocessed_dataset/transforms_with_poses.json"
+    POSES_SCALE: 2.655073380677074
+    POSES_CENTER_POINT: [-0.96365961, -0.91347552, -0.63206819]
+    POSES_UP_VECTOR: [-0.98134428, 0.06457235, 0.18109065]
+    DESIRED_RESOLUTION: 480 #(2.01cm rez)
+    FRAME_SAMPLING_RATE: 1
+    KEEP_DATA_ON_CPU: False
+RENDERER: #here for the hyper-params
+    NAME: "RendererInstantNGP" # implemented in NGP
+    IMAGE_H: 480
+    IMAGE_W: 640
+    FX: 517.3
+    FY: 516.5
+    CX: 318.6
+    CY: 255.3
+    SCALE: 0.03890145954725452
+    OFFSET: [0.43333183, 0.30204336, 0.25704286]
+    AABB_SCALE: 1
+    DISTORTION:
+        ENABLED: True
+        PARAMS: [0.2624, -0.9531, -0.0054, 0.0026, 1.1633]
+VERSION: 2

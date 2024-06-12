@@ -1,0 +1,39 @@
+PARENT: "tum.yml"
+META:
+    OUTPUT_DIR: "data"
+    NAME_EXPERIMENT: "TUM_office"
+    RUN_ID: 0
+DATASET:
+    NAME: "TUMDatasetInstantNGP"
+    INPUT_FOLDER: "Datasets/TUM_RGBD/rgbd_dataset_freiburg3_long_office_household"
+    CROP_SIZE:
+        ENABLED: True
+        VALUE: [384,512]
+    CROP_EDGE:
+        ENABLED: True
+        VALUE: 8
+    PNG_DEPTH_SCALE: 5000.0
+    POSES_FILENAME: "data/TUM_office/0/poses_processed_NGP.json"
+    SHARPNESS_FILENAME: "data/TUM_office/0/preprocess_sharpness.json"
+    NGP_PREPROCESSED_DATA_FILENAME: "data/TUM_office/0/preprocessed_dataset/transforms_with_poses.json"
+    POSES_SCALE: 1.6753329960161265
+    POSES_CENTER_POINT: [-2.95044974, 0.73956846, -1.06929518]
+    POSES_UP_VECTOR: [-0.90351388, 0.15623102, 0.39906709]
+    DESIRED_RESOLUTION: 928 #(2.00cm rez)
+    FRAME_SAMPLING_RATE: 1
+    KEEP_DATA_ON_CPU: False
+RENDERER: #here for the hyper-params
+    NAME: "RendererInstantNGP" # implemented in NGP
+    IMAGE_H: 480
+    IMAGE_W: 640
+    FX: 535.4
+    FY: 539.2
+    CX: 320.1
+    CY: 247.6
+    SCALE: 0.03214029551523763
+    OFFSET: [0.47873087, 0.50598803, 0.24714735] 
+    AABB_SCALE: 1
+    DISTORTION:
+        ENABLED: False
+        PARAMS:
+VERSION: 2
