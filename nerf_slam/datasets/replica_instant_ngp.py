@@ -76,7 +76,7 @@ class ReplicaDatasetInstantNGP(BaseDataset):
                 c2w[:3, 1] *= -1
                 c2w[:3, 2] *= -1
                 #c2w = torch.from_numpy(c2w).float()
-                self.poses.append(c2w.astype(np.float))
+                self.poses.append(c2w.astype(np.float32))
 
 
 

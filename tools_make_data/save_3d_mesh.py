@@ -54,28 +54,33 @@ def main(args):
         )
 
     # -- find last saved model
-    model_filename = os.path.join(
-        model_dir,
-        f'model_final.msgpack'
-    )
-    if cfg.RUNNER.ADD_FINAL_GIANT_BA:
+    if args.input_filename:
+        model_filename = args.input_filename
+    else:
         model_filename = os.path.join(
             model_dir,
-            f'model_final_after_final_giant_BA.msgpack'
+            f'model_final.msgpack'
         )
+        if cfg.RUNNER.ADD_FINAL_GIANT_BA:
+            model_filename = os.path.join(
+                model_dir,
+                f'model_final_after_final_giant_BA.msgpack'
+            )
 
-    if not os.path.isfile(model_filename):
-        m = os.listdir(model_dir)
-        m = [x for x in m if x.endswith("msgpack")]
-        m = [x.split(".")[0] for x in m]
-        m = [x.split("_")[1] for x in m]
-        m = [int(x) for x in m]
-        last_model_num = np.max(m)
+        if not os.path.isfile(model_filename):
+            m = os.listdir(model_dir)
+            m = [x for x in m if x.endswith("msgpack")]
+            m = [x.split(".")[0] for x in m]
+            m = [x.split("_")[1] for x in m]
+            m = [int(x) for x in m]
+            last_model_num = np.max(m)
 
-        model_filename = os.path.join(
-            model_dir,
-            f"model_{last_model_num}.msgpack"
-        )
+            model_filename = os.path.join(
+                model_dir,
+                f"model_{last_model_num}.msgpack"
+            )
+
+    assert os.path.isfile(model_filename)
 
     # -- create model
     mode = ngp.TestbedMode.Nerf
