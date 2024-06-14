@@ -2,7 +2,7 @@
     {
         "mgl": 1.0,
         "gpl": 0,
-        "iterations": 48,
+        "iterations": 50,
         "n_steps_between_cam_updates": 5
     }
 ]
