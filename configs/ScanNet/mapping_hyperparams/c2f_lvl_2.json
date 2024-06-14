@@ -2,8 +2,8 @@
     {
         "mgl": 0.1,
         "gpl": 2,
-        "lr_factor": 0.1,
-        "lr_factor_rot": 0.1,
+        "lr_factor": 0.01,
+        "lr_factor_rot": 0.01,
         "lbd_rgb_factor": 1.0,
         "lbd_depth_factor": 1.0,
         "iterations": 20,
@@ -12,8 +12,8 @@
     {
         "mgl": 0.5,
         "gpl": 1,
-        "lr_factor": 0.5,
-        "lr_factor_rot": 0.5,
+        "lr_factor": 0.02,
+        "lr_factor_rot": 0.02,
         "lbd_rgb_factor": 1.0,
         "lbd_depth_factor": 1.0,
         "iterations": 10,
@@ -26,7 +26,7 @@
         "lr_factor_rot": 1.0,
         "lbd_rgb_factor": 1.0,
         "lbd_depth_factor": 1.0,
-        "iterations": 40,
+        "iterations": 48,
         "n_steps_between_cam_updates": 5
     }
 ]
